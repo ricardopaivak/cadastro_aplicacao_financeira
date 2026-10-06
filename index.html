@@ -1,686 +1,275 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplicações Financeiras</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-            background-color: #E8E8E8;
-            color: #000000;
-        }
-
-        /* Header Principal */
-        .header-main {
-            background-color: #4472C4;
-            color: white;
-            padding: 4px 8px;
-            font-weight: bold;
-            font-size: 12px;
-            border-bottom: 1px solid #999999;
-        }
-
-        /* Container Principal */
-        .container {
-            background-color: white;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Grid de Listagem */
-        .grid-section {
-            flex: 1;
-            overflow: auto;
-            background-color: white;
-        }
-
-        .grid-table {
-            width: 100%;
-            border-collapse: collapse;
-            border: 1px solid #999999;
-        }
-
-        .grid-table thead {
-            background-color: #4472C4;
-            color: white;
-            font-weight: bold;
-            font-size: 11px;
-            position: sticky;
-            top: 0;
-        }
-
-        .grid-table th {
-            padding: 4px 8px;
-            text-align: left;
-            border-right: 1px solid #999999;
-            border-bottom: 1px solid #999999;
-        }
-
-        .grid-table th:last-child {
-            border-right: none;
-        }
-
-        .grid-table tbody tr {
-            border-bottom: 1px solid #999999;
-        }
-
-        .grid-table tbody tr:nth-child(even) {
-            background-color: #F5F5F5;
-        }
-
-        .grid-table tbody tr:hover {
-            background-color: #E0E0FF;
-            cursor: pointer;
-        }
-
-        .grid-table td {
-            padding: 4px 8px;
-            border-right: 1px solid #999999;
-            font-size: 11px;
-        }
-
-        .grid-table td:last-child {
-            border-right: none;
-        }
-
-        /* Seção de Detalhes */
-        .details-section {
-            background-color: #E8E8E8;
-            border-top: 1px solid #999999;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        /* Header da Seção de Detalhes */
-        .details-header {
-            background-color: #4472C4;
-            color: white;
-            padding: 4px 8px;
-            font-weight: bold;
-            font-size: 12px;
-            border-bottom: 1px solid #999999;
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-
-        .details-header button {
-            padding: 2px 6px;
-            background-color: #4472C4;
-            color: white;
-            border: 1px solid white;
-            cursor: pointer;
-            font-size: 11px;
-            min-width: 60px;
-            height: 22px;
-        }
-
-        .details-header button:hover {
-            background-color: #335AA0;
-        }
-
-        /* Abas */
-        .tabs {
-            display: flex;
-            background-color: #E8E8E8;
-            border-bottom: 1px solid #999999;
-            padding: 0;
-        }
-
-        .tab {
-            padding: 6px 12px;
-            background-color: #E8E8E8;
-            border: 1px solid #999999;
-            border-bottom: none;
-            cursor: pointer;
-            font-size: 11px;
-            margin-right: 2px;
-            color: #000000;
-            border-radius: 2px 2px 0 0;
-        }
-
-        .tab:hover {
-            background-color: #D0D0D0;
-        }
-
-        .tab.active {
-            background-color: white;
-            border-bottom: 1px solid white;
-            font-weight: bold;
-        }
-
-        /* Conteúdo de Aba */
-        .tab-content {
-            display: none;
-            padding: 10px;
-            background-color: white;
-            border-top: 1px solid #999999;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Fieldset e Grupos de Campos */
-        .fieldset {
-            border: 1px solid #999999;
-            margin: 8px 0;
-            padding: 10px;
-            background-color: white;
-        }
-
-        .fieldset legend {
-            padding: 0 4px;
-            font-weight: bold;
-            font-size: 11px;
-            background-color: white;
-        }
-
-        /* Linha de Campos */
-        .field-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 8px;
-            align-items: flex-start;
-        }
-
-        .field-group {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .field-group label {
-            font-size: 11px;
-            font-weight: normal;
-            margin-bottom: 2px;
-            color: #000000;
-        }
-
-        .field-group input[type="text"],
-        .field-group input[type="number"],
-        .field-group select {
-            padding: 3px 4px;
-            border: 1px solid #999999;
-            font-size: 11px;
-            font-family: Arial, sans-serif;
-            background-color: white;
-            color: #000000;
-        }
-
-        .field-group input[type="text"]:focus,
-        .field-group input[type="number"]:focus,
-        .field-group select:focus {
-            outline: none;
-            border-color: #4472C4;
-            background-color: #FFFFCC;
-        }
-
-        .field-group input:disabled,
-        .field-group select:disabled {
-            background-color: #F0F0F0;
-            color: #666666;
-            cursor: not-allowed;
-        }
-
-        .error-message {
-            color: #D32F2F;
-            font-size: 11px;
-            margin-top: 3px;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .field-group.error input,
-        .field-group.error select {
-            border-color: #D32F2F !important;
-            background-color: #FFEBEE !important;
-        }
-
-        /* Selectbox width */
-        select {
-            min-width: 100px;
-        }
-
-        input[type="text"] {
-            min-width: 120px;
-        }
-
-        input[type="number"] {
-            min-width: 80px;
-        }
-
-        /* Responsivo */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .grid-section {
-                flex: 1;
-                min-height: 200px;
-            }
-
-            .details-section {
-                flex: 1;
-                max-height: none;
-            }
-
-            .field-row {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .field-group {
-                width: 100%;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Aplicações Financeiras</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Tahoma, Segoe UI, Arial, sans-serif; font-size: 11px; color: #000; background: #fff; width: 896px; }
+  .tabtitle { background: #f0f0f0; border-bottom: 1px solid #c8c8c8; height: 26px; }
+  .tabtitle span { display: inline-block; background: #3c3c64; color: #fff; font-weight: bold; padding: 6px 8px; height: 26px; }
+  .toolbar { display: flex; align-items: center; height: 27px; background: #f0f0f0; border-bottom: 1px solid #c8c8c8; }
+  .toolbar .cap { background: #3c3c64; color: #fff; font-weight: bold; padding: 0 6px; height: 27px; line-height: 27px; margin-right: 4px; }
+  .btn { width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; }
+  .btn:hover { border-color: #7aa7d8; background: #dbe8f6; }
+  .btn.dis { opacity: .35; pointer-events: none; }
+  .tbtext { height: 22px; padding: 0 6px; display: inline-flex; align-items: center; cursor: pointer; border: 1px solid transparent; }
+  .tbtext:hover { border-color: #7aa7d8; background: #dbe8f6; }
+  .sep { width: 1px; height: 18px; background: #b0b0b0; margin: 0 4px; }
+  .grid { height: 333px; border-bottom: 1px solid #c8c8c8; overflow: auto; }
+  table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+  th { text-align: left; font-weight: bold; border-right: 1px solid #c0c0c0; border-bottom: 1px solid #c0c0c0; padding: 0 2px; height: 15px; background: #fff; }
+  td { padding: 0 2px; height: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }
+  td.r, th.r { text-align: right; }
+  tr.rsel td { background: #99b4d1; }
+  tr.rsel td:first-child { background: #fff; outline: 1px solid #000; outline-offset: -1px; font-weight: bold; }
+  .splitter { height: 20px; background: #f0f0f0; position: relative; border-bottom: 1px solid #c8c8c8; }
+  .splitter::after { content: ""; position: absolute; left: 18px; top: 8px; width: 38px; height: 2px; background: #808080; }
+  .tabs { display: flex; border-bottom: 1px solid #a0a0a0; padding: 2px 0 0 2px; height: 22px; background: #fff; }
+  .tab { padding: 2px 5px; border: 1px solid #a0a0a0; border-bottom: none; background: #fff; font-size: 12px; font-weight: bold; position: relative; top: 1px; }
+  .form { position: relative; height: 180px; }
+  .f { position: absolute; display: flex; align-items: center; }
+  .lbl { text-align: right; padding-right: 4px; }
+  .lnk { color: #0645ad; text-decoration: underline; cursor: pointer; }
+  input[type=text], select { height: 20px; border: 1px solid #a0a0a0; font: inherit; font-size: 11px; padding: 0 2px; background: #fff; }
+  input:disabled, select:disabled { background: #fff; color: #000; }
+  .num { text-align: right; }
+  .err { border-color: #d32f2f !important; background: #ffebee !important; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header Principal -->
-        <div class="header-main">
-            Aplicações Financeiras
-        </div>
+<div class="tabtitle"><span>Aplicações Financeiras</span></div>
 
-        <!-- VISUAL FUNCTION 1: Listagem de Aplicações -->
-        <div style="background-color: #E8E8E8; padding: 4px 8px; border-bottom: 1px solid #999999; display: flex; gap: 4px; align-items: center;">
-            <button onclick="calcularDeRE()" style="padding: 2px 12px; background-color: #4472C4; color: white; border: 1px solid #999999; cursor: pointer; font-size: 11px; min-width: 100px; height: 24px;">Calcular DeRE</button>
-        </div>
-        <div class="grid-section">
-            <table class="grid-table">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Descrição do Ativo</th>
-                        <th>Valor Saldo Inicial</th>
-                        <th>Conta Contábil</th>
-                    </tr>
-                </thead>
-                <tbody id="gridBody">
-                    <tr class="grid-row">
-                        <td class="grid-codigo"></td>
-                        <td class="grid-descricao"></td>
-                        <td class="grid-valor"></td>
-                        <td class="grid-conta"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<!-- Visual Function 1: Lista -->
+<div class="toolbar">
+  <div class="cap">Aplicações Financeiras</div>
+  <span class="btn" title="Excluir" onclick="excluir()"><svg width="16" height="16"><path d="M3 4h10M6 4V2h4v2M4 4l1 10h6l1-10M7 6v6M9 6v6" stroke="#444" fill="none"/></svg></span>
+  <span class="sep"></span>
+  <span class="btn" title="Primeiro" onclick="nav('p')"><svg width="16" height="16"><path d="M4 3v10M13 3L6 8l7 5z" fill="#1c2a8c" stroke="#1c2a8c"/></svg></span>
+  <span class="btn" title="Anterior" onclick="nav('a')"><svg width="16" height="16"><path d="M8 3L2 8l6 5zM14 3L8 8l6 5z" fill="#1c2a8c"/></svg></span>
+  <span class="btn" title="Próximo" onclick="nav('n')"><svg width="16" height="16"><path d="M2 3l6 5-6 5zM8 3l6 5-6 5z" fill="#1c2a8c"/></svg></span>
+  <span class="btn" title="Último" onclick="nav('u')"><svg width="16" height="16"><path d="M12 3v10M3 3l7 5-7 5z" fill="#1c2a8c" stroke="#1c2a8c"/></svg></span>
+  <span class="btn" title="Novo" onclick="novo()"><svg width="16" height="16"><path d="M3 2h7l3 3v9H3zM10 2v3h3" fill="#fff" stroke="#444"/><path d="M11 10v5M8.5 12.5h5" stroke="#2a6fd6" stroke-width="1.5"/></svg></span>
+  <span class="btn" title="Relatório" onclick="relatorio()"><svg width="16" height="16"><path d="M3 2h10v12H3zM5 5h6M5 8h6M5 11h4" fill="#fff" stroke="#444"/></svg></span>
+  <span class="btn" title="Localizar" onclick="localizar()"><svg width="16" height="16"><circle cx="7" cy="7" r="4.5" fill="none" stroke="#444" stroke-width="1.5"/><path d="M10 10l4 4" stroke="#444" stroke-width="2"/></svg></span>
+  <span class="sep"></span>
+  <span class="btn" title="Atualizar" onclick="render()"><svg width="16" height="16"><path d="M13 8a5 5 0 1 1-1.5-3.5M12 1v4H8" fill="none" stroke="#2a6fd6" stroke-width="1.5"/></svg></span>
+  <span class="sep"></span>
+  <span class="tbtext" title="Calcular DeRE" onclick="calcularDeRE()">Calcular DeRE</span>
+</div>
 
-        <!-- VISUAL FUNCTION 2: Manutenção de Aplicação -->
-        <div class="details-section">
-            <!-- Header da Seção de Detalhes -->
-            <div class="details-header">
-                Aplicações Financeiras
-                <button title="Incluir" onclick="iniciarNovoRegistro()">Incluir</button>
-                <button title="Salvar" onclick="salvarAplicacao()">Salvar</button>
-                <button title="Cancelar" onclick="cancelarEdicao()">Cancelar</button>
-                <button title="Excluir" onclick="excluirAplicacao()">Excluir</button>
-            </div>
+<div class="grid">
+  <table>
+    <colgroup><col style="width:113px"><col style="width:330px"><col style="width:130px"><col></colgroup>
+    <thead><tr><th>Código</th><th>Descrição do Ativo</th><th class="r">Valor Saldo Inicial</th><th>Conta Contábil</th></tr></thead>
+    <tbody id="gridBody"></tbody>
+  </table>
+</div>
 
-            <!-- Abas -->
-            <div class="tabs">
-                <div class="tab active" onclick="switchTab(this, 'identificacao')">Identificação</div>
-            </div>
+<div class="splitter"></div>
 
-            <!-- Conteúdo da Aba Identificação -->
-            <div id="identificacao" class="tab-content active">
-                <div class="fieldset">
-                    <legend>Identificação</legend>
+<!-- Visual Function 2: Pasta -->
+<div class="toolbar">
+  <div class="cap">Aplicação Financeira</div>
+  <span class="btn" id="bNovo" title="Incluir" onclick="novo()"><svg width="16" height="16"><path d="M3 2h7l3 3v9H3zM10 2v3h3" fill="#fff" stroke="#444"/><path d="M11 10v5M8.5 12.5h5" stroke="#2a6fd6" stroke-width="1.5"/></svg></span>
+  <span class="btn dis" id="bSalvar" title="Salvar" onclick="salvar()"><svg width="16" height="16"><path d="M2 2h10l2 2v10H2zM5 2v4h6V2M5 14V9h6v5" fill="#fff" stroke="#444"/></svg></span>
+  <span class="btn dis" id="bCancelar" title="Cancelar" onclick="cancelar()"><svg width="16" height="16"><path d="M2 2h10l2 2v10H2zM5 2v4h6V2" fill="#fff" stroke="#444"/><path d="M9 9l5 5M14 9l-5 5" stroke="#c00" stroke-width="1.5"/></svg></span>
+  <span class="btn" title="Excluir" onclick="excluir()"><svg width="16" height="16"><path d="M3 4h10M6 4V2h4v2M4 4l1 10h6l1-10M7 6v6M9 6v6" stroke="#444" fill="none"/></svg></span>
+  <span class="sep"></span>
+  <span class="btn" title="Primeiro" onclick="nav('p')"><svg width="16" height="16"><path d="M4 3v10M13 3L6 8l7 5z" fill="#1c2a8c" stroke="#1c2a8c"/></svg></span>
+  <span class="btn" title="Anterior" onclick="nav('a')"><svg width="16" height="16"><path d="M8 3L2 8l6 5zM14 3L8 8l6 5z" fill="#1c2a8c"/></svg></span>
+  <span class="btn" title="Próximo" onclick="nav('n')"><svg width="16" height="16"><path d="M2 3l6 5-6 5zM8 3l6 5-6 5z" fill="#1c2a8c"/></svg></span>
+  <span class="btn" title="Último" onclick="nav('u')"><svg width="16" height="16"><path d="M12 3v10M3 3l7 5-7 5z" fill="#1c2a8c" stroke="#1c2a8c"/></svg></span>
+</div>
 
-                    <div class="field-row">
-                        <div class="field-group" style="flex: 0 0 150px;">
-                            <label for="codigo">Código</label>
-                            <input type="text" id="codigo" value="" list="codigos-list" placeholder="Ex: 0000000001" disabled>
-                            <datalist id="codigos-list"></datalist>
-                            <div class="error-message" id="erro-codigo">Campo obrigatório</div>
-                        </div>
-                        <div class="field-group">
-                            <label for="descricao">Descrição do Ativo</label>
-                            <input type="text" id="descricao" value="" disabled>
-                            <div class="error-message" id="erro-descricao">Campo obrigatório</div>
-                        </div>
-                    </div>
+<div class="tabs"><div class="tab">Identificação</div></div>
 
-                    <div class="field-row">
-                        <div class="field-group">
-                            <label for="valor-saldo">Valor Saldo Inicial</label>
-                            <input type="text" id="valor-saldo" value="" placeholder="Entrada em moeda" disabled>
-                            <div class="error-message" id="erro-valor">Campo obrigatório</div>
-                        </div>
-                        <div class="field-group">
-                            <label for="conta-contabil">Conta Contábil</label>
-                            <select id="conta-contabil" disabled>
-                                <option value="">Selecione uma conta...</option>
-                                <option>1.1.1.01.001 - Aplicações Financeiras Renda Fixa</option>
-                                <option>1.1.1.01.002 - Aplicações Financeiras Renda Variável</option>
-                                <option>1.1.1.02.001 - CDB e Títulos de Renda Fixa</option>
-                                <option>1.1.1.02.002 - Fundos de Investimento Conservador</option>
-                                <option>1.1.1.03.001 - Poupança e Depósitos de Curto Prazo</option>
-                                <option>1.1.1.04.001 - Ações e Títulos Patrimoniais</option>
-                                <option>1.1.1.04.002 - Fundos Multimercado</option>
-                                <option>1.1.1.05.001 - Derivativos e Operações Estruturadas</option>
-                                <option>1.1.1.06.001 - Operações com Moeda Estrangeira</option>
-                                <option>1.1.1.07.001 - Aplicações Financeiras em Fase de Liquidação</option>
-                            </select>
-                            <div class="error-message" id="erro-conta">Campo obrigatório</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="form">
+  <div id="lookup" style="display:none;position:absolute;left:402px;top:56px;width:420px;background:#fff;border:1px solid #808080;box-shadow:2px 2px 6px rgba(0,0,0,.3);z-index:10">
+    <div style="background:#3c3c64;color:#fff;font-weight:bold;padding:3px 6px;display:flex;justify-content:space-between">Contas Contábeis<span style="cursor:pointer" onclick="fechaLookup()">✕</span></div>
+    <div style="padding:4px"><input type="text" id="lkFiltro" placeholder="Localizar..." style="width:100%" oninput="montaLookup()"></div>
+    <div style="height:150px;overflow:auto"><table><colgroup><col style="width:100px"><col></colgroup>
+      <thead><tr><th>Código</th><th>Descrição</th></tr></thead><tbody id="lkBody"></tbody></table></div>
+  </div>
+  <div class="f" style="left:0;top:10px"><span class="lbl" style="width:106px">Código</span><input type="text" id="codigo" style="width:90px" maxlength="10" readonly></div>
+  <div class="f" style="left:196px;top:10px"><span class="lbl" style="width:110px">Descrição do Ativo</span><input type="text" id="descricao" style="width:440px"></div>
 
-    <script>
-        // Variável para rastrear o estado de edição
-        let emEdicao = false;
-        let dadosAntesDaEdicao = {};
+  <div class="f" style="left:0;top:34px"><span class="lbl" style="width:106px">Valor Saldo Inicial</span><input type="text" id="valor" class="num" style="width:200px"></div>
+  <div class="f" style="left:306px;top:34px"><span class="lbl lnk" style="width:90px" onclick="abreLookup()">Conta Contábil</span>
+    <select id="conta" style="width:360px">
+      <option value=""></option>
+      <option>1.1.1.01.001 - Aplicações Financeiras Renda Fixa</option>
+      <option>1.1.1.01.002 - Aplicações Financeiras Renda Variável</option>
+      <option>1.1.1.02.001 - CDB e Títulos de Renda Fixa</option>
+      <option>1.1.1.02.002 - Fundos de Investimento Conservador</option>
+      <option>1.1.1.03.001 - Poupança e Depósitos de Curto Prazo</option>
+      <option>1.1.1.04.001 - Ações e Títulos Patrimoniais</option>
+      <option>1.1.1.04.002 - Fundos Multimercado</option>
+      <option>1.1.1.05.001 - Derivativos e Operações Estruturadas</option>
+      <option>1.1.1.06.001 - Operações com Moeda Estrangeira</option>
+      <option>1.1.1.07.001 - Aplicações Financeiras em Fase de Liquidação</option>
+    </select>
+  </div>
+</div>
 
-        // Carrega dados salvos ao abrir a página
-        function loadFormData() {
-            const savedData = localStorage.getItem('aplicacoes_financeiras_data');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                Object.keys(data).forEach(fieldId => {
-                    const field = document.getElementById(fieldId);
-                    if (field) {
-                        if (field.type === 'checkbox') {
-                            field.checked = data[fieldId];
-                        } else {
-                            field.value = data[fieldId];
-                        }
-                    }
-                });
-            }
-        }
+<script>
+  var campos = ['codigo', 'descricao', 'valor', 'conta'];
+  var dados = [{ codigo: '0000000001', descricao: 'CDB Banco Teste', valor: '10.000,00', conta: '1.1.1.02.001 - CDB e Títulos de Renda Fixa' }];
+  var atual = 0, editando = false;
 
-        // Atualiza o grid com as alterações do formulário
-        function updateGridFromForm() {
-            const codigo = document.getElementById('codigo').value;
-            const descricao = document.getElementById('descricao').value;
-            const valor = document.getElementById('valor-saldo').value;
-            const conta = document.getElementById('conta-contabil').value;
+  function $(id) { return document.getElementById(id); }
 
-            // Atualiza as células da primeira linha do grid
-            const gridRow = document.querySelector('#gridBody tr');
-            if (gridRow) {
-                gridRow.querySelector('.grid-codigo').textContent = codigo;
-                gridRow.querySelector('.grid-descricao').textContent = descricao;
-                gridRow.querySelector('.grid-valor').textContent = valor;
-                gridRow.querySelector('.grid-conta').textContent = conta;
-            }
-        }
+  function render() {
+    var tb = $('gridBody'); tb.innerHTML = '';
+    dados.forEach(function (d, i) {
+      var tr = document.createElement('tr');
+      if (i === atual) tr.className = 'rsel';
+      ['codigo', 'descricao', 'valor', 'conta'].forEach(function (k) {
+        var td = document.createElement('td'); td.textContent = d[k];
+        if (k === 'valor') td.className = 'r';
+        tr.appendChild(td);
+      });
+      tr.onclick = function () { if (!editando) { atual = i; render(); } };
+      tb.appendChild(tr);
+    });
+    carregaTela();
+  }
 
-        // Salva dados quando há alteração
-        function saveFormDataWithGridUpdate() {
-            const formData = {};
-            const inputs = document.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                if (input.id) {
-                    if (input.type === 'checkbox') {
-                        formData[input.id] = input.checked;
-                    } else {
-                        formData[input.id] = input.value;
-                    }
-                }
-            });
-            localStorage.setItem('aplicacoes_financeiras_data', JSON.stringify(formData));
-            console.log('Dados salvos:', new Date().toLocaleTimeString());
-            updateGridFromForm();
-        }
+  function carregaTela() {
+    var d = dados[atual] || {};
+    campos.forEach(function (c) { $(c).value = d[c] || ''; $(c).classList.remove('err'); });
+  }
 
-        // Adiciona listeners para todos os campos
-        function attachListeners() {
-            const inputs = document.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('change', saveFormDataWithGridUpdate);
-                input.addEventListener('input', saveFormDataWithGridUpdate);
-                input.addEventListener('blur', saveFormDataWithGridUpdate);
-            });
-        }
+  function modoEdicao(on) {
+    editando = on;
+    $('codigo').readOnly = !on || atual !== -1;
+    $('bSalvar').classList.toggle('dis', !on);
+    $('bCancelar').classList.toggle('dis', !on);
+    $('bNovo').classList.toggle('dis', on);
+  }
 
-        function switchTab(tabElement, contentId) {
-            // Remove active de todas as abas
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
+  function proximoCodigo() {
+    var max = dados.reduce(function (m, d) { return Math.max(m, parseInt(d.codigo, 10) || 0); }, 0);
+    return String(max + 1).padStart(10, '0');
+  }
 
-            // Remove active de todos os conteúdos
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
+  function novo() {
+    atual = -1; render();
+    modoEdicao(true);
+    $('codigo').value = proximoCodigo();
+    $('descricao').focus();
+  }
 
-            // Adiciona active na aba clicada
-            tabElement.classList.add('active');
+  function salvar() {
+    var ok = true, reg = {};
+    campos.forEach(function (c) {
+      reg[c] = $(c).value.trim();
+      $(c).classList.toggle('err', !reg[c]);
+      if (!reg[c]) ok = false;
+    });
+    if (!ok) { alert('Preencha os campos obrigatórios.'); return; }
+    var v = parseFloat(reg.valor.replace(/\./g, '').replace(',', '.'));
+    if (isNaN(v)) { $('valor').classList.add('err'); alert('Valor Saldo Inicial inválido.'); return; }
+    reg.valor = v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    reg.codigo = reg.codigo.padStart(10, '0');
+    if (atual === -1) { dados.push(reg); atual = dados.length - 1; } else { dados[atual] = reg; }
+    modoEdicao(false); render();
+  }
 
-            // Adiciona active no conteúdo correspondente
-            document.getElementById(contentId).classList.add('active');
-        }
+  function cancelar() {
+    if (atual === -1) atual = dados.length ? 0 : -1;
+    modoEdicao(false); render();
+  }
 
-        // Gera sugestões de códigos
-        function gerarCodigosSugeridos() {
-            const datalist = document.getElementById('codigos-list');
-            datalist.innerHTML = '';
+  function excluir() {
+    if (editando || atual < 0 || !dados.length) return;
+    if (!confirm('Deseja excluir esta aplicação?')) return;
+    dados.splice(atual, 1);
+    atual = dados.length ? Math.min(atual, dados.length - 1) : -1;
+    render();
+  }
 
-            for (let i = 1; i <= 100; i++) {
-                const codigo = String(i).padStart(10, '0');
-                const option = document.createElement('option');
-                option.value = codigo;
-                datalist.appendChild(option);
-            }
-        }
+  function nav(t) {
+    if (editando || !dados.length) return;
+    if (t === 'p') atual = 0;
+    if (t === 'u') atual = dados.length - 1;
+    if (t === 'a') atual = Math.max(0, atual - 1);
+    if (t === 'n') atual = Math.min(dados.length - 1, atual + 1);
+    render();
+  }
 
-        // Habilita edição
-        function habilitarEdicao() {
-            document.querySelectorAll('input, select').forEach(field => {
-                field.removeAttribute('disabled');
-            });
-        }
+  // Duplo clique no campo habilita alteração do registro selecionado
+  document.querySelector('.form').addEventListener('dblclick', function () {
+    if (!editando && atual >= 0) modoEdicao(true);
+  });
 
-        // Desabilita edição
-        function desabilitarEdicao() {
-            document.querySelectorAll('input, select').forEach(field => {
-                field.setAttribute('disabled', 'disabled');
-            });
-        }
+  // Conta Contábil: escolher uma conta fora da edição entra em modo de alteração
+  $('conta').addEventListener('change', function () {
+    if (!editando) { var v = this.value; if (atual < 0) return; modoEdicao(true); this.value = v; }
+  });
 
-        // Inicia novo registro
-        function iniciarNovoRegistro() {
-            emEdicao = true;
+  function contas() {
+    return Array.prototype.slice.call($('conta').options).filter(function (o) { return o.value; })
+      .map(function (o) { var p = o.value.split(' - '); return { cod: p[0], desc: p.slice(1).join(' - '), full: o.value }; });
+  }
 
-            // Salva dados atuais antes de limpar
-            dadosAntesDaEdicao = {
-                codigo: document.getElementById('codigo').value,
-                descricao: document.getElementById('descricao').value,
-                'valor-saldo': document.getElementById('valor-saldo').value,
-                'conta-contabil': document.getElementById('conta-contabil').value
-            };
+  function montaLookup() {
+    var f = $('lkFiltro').value.toLowerCase(), tb = $('lkBody'); tb.innerHTML = '';
+    contas().filter(function (c) { return !f || c.full.toLowerCase().indexOf(f) >= 0; }).forEach(function (c) {
+      var tr = document.createElement('tr');
+      if (c.full === $('conta').value) tr.className = 'rsel';
+      tr.innerHTML = '<td></td><td></td>';
+      tr.cells[0].textContent = c.cod; tr.cells[1].textContent = c.desc;
+      tr.ondblclick = function () {
+        if (!editando && atual >= 0) modoEdicao(true);
+        if (editando) $('conta').value = c.full;
+        fechaLookup();
+      };
+      tb.appendChild(tr);
+    });
+  }
 
-            // Limpa o formulário
-            document.getElementById('codigo').value = '';
-            document.getElementById('descricao').value = '';
-            document.getElementById('valor-saldo').value = '';
-            document.getElementById('conta-contabil').value = '';
+  function abreLookup() { $('lkFiltro').value = ''; montaLookup(); $('lookup').style.display = 'block'; $('lkFiltro').focus(); }
+  function fechaLookup() { $('lookup').style.display = 'none'; }
 
-            // Limpa mensagens de erro
-            document.querySelectorAll('.error-message').forEach(msg => msg.classList.remove('show'));
-            document.querySelectorAll('.field-group').forEach(fg => fg.classList.remove('error'));
+  // Digitar em qualquer campo entra em modo de alteração (habilita Salvar/Cancelar)
+  ['descricao', 'valor'].forEach(function (c) {
+    $(c).addEventListener('input', function () { if (!editando && atual >= 0) modoEdicao(true); });
+  });
 
-            // Habilita campos
-            habilitarEdicao();
+  function localizar() {
+    if (editando || !dados.length) return;
+    var t = prompt('Localizar (código, descrição ou conta):');
+    if (!t) return;
+    t = t.toLowerCase();
+    var ini = atual + 1;
+    for (var k = 0; k < dados.length; k++) {
+      var i = (ini + k) % dados.length, d = dados[i];
+      if ((d.codigo + ' ' + d.descricao + ' ' + d.conta).toLowerCase().indexOf(t) >= 0) { atual = i; render(); return; }
+    }
+    alert('Nenhum registro encontrado.');
+  }
 
-            // Foca no primeiro campo
-            document.getElementById('codigo').focus();
-        }
+  function relatorio() {
+    var esc = function (s) { return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); };
+    var linhas = dados.map(function (d) {
+      return '<tr><td>' + esc(d.codigo) + '</td><td>' + esc(d.descricao) + '</td><td style="text-align:right">' + esc(d.valor) + '</td><td>' + esc(d.conta) + '</td></tr>';
+    }).join('');
+    var w = window.open('', '_blank');
+    if (!w) { alert('Permita pop-ups para gerar o relatório.'); return; }
+    w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatório - Aplicações Financeiras</title>' +
+      '<style>body{font-family:Tahoma,Arial;font-size:11px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #999;padding:3px}th{background:#eee;text-align:left}</style></head><body>' +
+      '<h3>Aplicações Financeiras</h3><p>Emitido em ' + new Date().toLocaleString('pt-BR') + '</p>' +
+      '<table><tr><th>Código</th><th>Descrição do Ativo</th><th>Valor Saldo Inicial</th><th>Conta Contábil</th></tr>' + linhas + '</table>' +
+      '<script>window.print()<\/script></body></html>');
+    w.document.close();
+  }
 
-        // Valida formulário
-        function validarFormulario() {
-            let valido = true;
+  function calcularDeRE() {
+    window.open('https://ricardopaivak.github.io/dere_eventos_mensais/', '_blank');
+  }
 
-            // Limpa mensagens de erro anteriores
-            document.querySelectorAll('.error-message').forEach(msg => msg.classList.remove('show'));
-            document.querySelectorAll('.field-group').forEach(fg => fg.classList.remove('error'));
-
-            // Valida código
-            const codigo = document.getElementById('codigo').value.trim();
-            if (!codigo) {
-                document.getElementById('erro-codigo').classList.add('show');
-                document.getElementById('codigo').parentElement.classList.add('error');
-                valido = false;
-            }
-
-            // Valida descrição
-            const descricao = document.getElementById('descricao').value.trim();
-            if (!descricao) {
-                document.getElementById('erro-descricao').classList.add('show');
-                document.getElementById('descricao').parentElement.classList.add('error');
-                valido = false;
-            }
-
-            // Valida valor
-            const valor = document.getElementById('valor-saldo').value.trim();
-            if (!valor) {
-                document.getElementById('erro-valor').classList.add('show');
-                document.getElementById('valor-saldo').parentElement.classList.add('error');
-                valido = false;
-            }
-
-            // Valida conta
-            const conta = document.getElementById('conta-contabil').value;
-            if (!conta) {
-                document.getElementById('erro-conta').classList.add('show');
-                document.getElementById('conta-contabil').parentElement.classList.add('error');
-                valido = false;
-            }
-
-            return valido;
-        }
-
-        // Salva aplicação
-        function salvarAplicacao() {
-            if (!validarFormulario()) {
-                return;
-            }
-
-            const codigo = document.getElementById('codigo').value;
-            const descricao = document.getElementById('descricao').value;
-            const valor = document.getElementById('valor-saldo').value;
-            const conta = document.getElementById('conta-contabil').value;
-
-            // Salva dados no localStorage
-            const formData = {
-                codigo: codigo,
-                descricao: descricao,
-                'valor-saldo': valor,
-                'conta-contabil': conta
-            };
-            localStorage.setItem('aplicacoes_financeiras_data', JSON.stringify(formData));
-
-            // Atualiza grid
-            updateGridFromForm();
-
-            // MANTÉM os dados em tela - NÃO desabilita os campos
-            emEdicao = false;
-
-            // Limpa mensagens de erro
-            document.querySelectorAll('.error-message').forEach(msg => msg.classList.remove('show'));
-            document.querySelectorAll('.field-group').forEach(fg => fg.classList.remove('error'));
-
-            alert('Aplicação salva com sucesso!');
-        }
-
-        // Cancela edição
-        function cancelarEdicao() {
-            if (emEdicao) {
-                if (confirm('Deseja cancelar? As alterações não salvas serão perdidas.')) {
-                    // Restaura dados anteriores se houver
-                    if (Object.keys(dadosAntesDaEdicao).length > 0) {
-                        Object.keys(dadosAntesDaEdicao).forEach(fieldId => {
-                            const field = document.getElementById(fieldId);
-                            if (field) {
-                                field.value = dadosAntesDaEdicao[fieldId];
-                            }
-                        });
-                    } else {
-                        // Ou limpa se for novo registro
-                        document.getElementById('codigo').value = '';
-                        document.getElementById('descricao').value = '';
-                        document.getElementById('valor-saldo').value = '';
-                        document.getElementById('conta-contabil').value = '';
-                    }
-
-                    // Desabilita campos
-                    desabilitarEdicao();
-                    emEdicao = false;
-
-                    // Limpa mensagens de erro
-                    document.querySelectorAll('.error-message').forEach(msg => msg.classList.remove('show'));
-                    document.querySelectorAll('.field-group').forEach(fg => fg.classList.remove('error'));
-                }
-            }
-        }
-
-        // Exclui aplicação
-        function excluirAplicacao() {
-            if (confirm('Deseja excluir esta aplicação?')) {
-                // Limpa o formulário
-                document.getElementById('codigo').value = '';
-                document.getElementById('descricao').value = '';
-                document.getElementById('valor-saldo').value = '';
-                document.getElementById('conta-contabil').value = '';
-
-                // Limpa mensagens de erro
-                document.querySelectorAll('.error-message').forEach(msg => msg.classList.remove('show'));
-                document.querySelectorAll('.field-group').forEach(fg => fg.classList.remove('error'));
-
-                // Limpa dados
-                localStorage.setItem('aplicacoes_financeiras_data', JSON.stringify({}));
-                updateGridFromForm();
-
-                // Desabilita campos
-                desabilitarEdicao();
-                emEdicao = false;
-
-                alert('Aplicação excluída com sucesso!');
-            }
-        }
-
-        // Função para calcular DeRE
-        function calcularDeRE() {
-            const codigo = document.getElementById('codigo').value;
-            const descricao = document.getElementById('descricao').value;
-            const valor = document.getElementById('valor-saldo').value;
-            const conta = document.getElementById('conta-contabil').value;
-
-            if (!codigo || !descricao || !valor || !conta) {
-                alert('Preencha todos os campos antes de calcular a DeRE');
-                return;
-            }
-
-            // Abre o link da DeRE em uma nova aba
-            window.open('https://ricardopaivak.github.io/dere_eventos_mensais/', '_blank');
-        }
-
-        // Carrega dados ao abrir a página
-        window.addEventListener('DOMContentLoaded', () => {
-            gerarCodigosSugeridos();
-            loadFormData();
-            attachListeners();
-            updateGridFromForm();
-        });
-    </script>
+  render();
+</script>
 </body>
 </html>
