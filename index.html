@@ -34,6 +34,9 @@
   input[type=text], select { height: 20px; border: 1px solid #a0a0a0; font: inherit; font-size: 11px; padding: 0 2px; background: #fff; }
   input:disabled, select:disabled { background: #fff; color: #000; }
   .num { text-align: right; }
+  .tip { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; margin-left: 5px; border-radius: 50%; background: #2a6fd6; color: #fff; font: bold 10px Georgia, serif; font-style: italic; cursor: help; }
+  .tip .tiptext { display: none; position: absolute; right: 0; top: 18px; width: 300px; padding: 6px 8px; background: #ffffe1; color: #000; border: 1px solid #767676; box-shadow: 2px 2px 4px rgba(0,0,0,.25); font: normal 11px Tahoma, Arial, sans-serif; z-index: 20; }
+  .tip:hover .tiptext, .tip:focus .tiptext { display: block; }
   .err { border-color: #d32f2f !important; background: #ffebee !important; }
 </style>
 </head>
@@ -109,6 +112,7 @@
       <option>1.1.1.06.001 - Operações com Moeda Estrangeira</option>
       <option>1.1.1.07.001 - Aplicações Financeiras em Fase de Liquidação</option>
     </select>
+    <span class="tip" tabindex="0">i<span class="tiptext">Conforme determinado pelo manual da DeRE, apenas as contas contábeis vinculadas aos codtrib 120130001, 120230001, 120330001, 111112701, devem ser utilizadas no evento D - 1106.</span></span>
   </div>
 </div>
 
